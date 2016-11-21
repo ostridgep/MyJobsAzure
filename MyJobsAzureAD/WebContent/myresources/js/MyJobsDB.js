@@ -1,5 +1,5 @@
 
- 
+var debugPassword = "DEBUG"; 
 var w = null;
 var objtype="";	
 var objid="";	
@@ -524,7 +524,7 @@ function databaseExists(){
 	
 }	
 function SetLocalStorageChangePage(page){
-
+	 
 	html5sql.process(
 	    ["SELECT * from MyWorkConfig "],
 	    function(transaction, results, rowsArray){
@@ -573,6 +573,27 @@ function SetLocalStorageChangePage(page){
 				localStorage.setItem('AssetPath',rowsArray[i].paramvalue);
 		
 			}
+			if (rowsArray[i].paramname=='DEBUGUSERNAME'){
+				localStorage.setItem('DebugUsername',rowsArray[i].paramvalue);
+		
+			}
+			if (rowsArray[i].paramname=='DEBUGSCENARIO'){
+				localStorage.setItem('DebugScenario',rowsArray[i].paramvalue);
+		
+			}
+			if (rowsArray[i].paramname=='DEBUGPASSWORD'){
+				localStorage.setItem('DebugPassword',rowsArray[i].paramvalue);
+		
+			}
+			if (rowsArray[i].paramname=='DEBUGTOKENVALIDITY'){
+				localStorage.setItem('DebugTokenValidity',rowsArray[i].paramvalue);
+		
+			}
+			if (rowsArray[i].paramname=='LASTTOKENREFRESH'){
+				localStorage.setItem('LadtTokenRefresh',rowsArray[i].paramvalue);
+		
+			}
+
 	      }
 	     window.location.href=page
 	    },
@@ -624,6 +645,27 @@ html5sql.process(
 			localStorage.setItem('AssetPath',rowsArray[i].paramvalue);
 	
 		}
+		if (rowsArray[i].paramname=='DEBUGUSERNAME'){
+			localStorage.setItem('DebugUsername',rowsArray[i].paramvalue);
+	
+		}
+		if (rowsArray[i].paramname=='DEBUGSCENARIO'){
+			localStorage.setItem('DebugScenario',rowsArray[i].paramvalue);
+	
+		}
+		if (rowsArray[i].paramname=='DEBUGPASSWORD'){
+			localStorage.setItem('DebugPassword',rowsArray[i].paramvalue);
+	
+		}
+		if (rowsArray[i].paramname=='DEBUGTOKENVALIDITY'){
+			localStorage.setItem('DebugTokenValidity',rowsArray[i].paramvalue);
+	
+		}
+		if (rowsArray[i].paramname=='LASTTOKENREFRESH'){
+			localStorage.setItem('LadtTokenRefresh',rowsArray[i].paramvalue);
+	
+		}
+
       }
     },
     function(error, statement){
@@ -689,6 +731,20 @@ function updateVehicleReg(reg,fullname){
 
 	}
 function SetConfigParam(paramName, paramValue){
+	 if (paramName == 'DEBUGUSERNAME') {
+	        localStorage.setItem('DebugUsername', paramValue);
+	    } if (paramName == 'DEBUGSCENARIO') {
+	        localStorage.setItem('DebugScenario', paramValue);
+	    }
+	    if (paramName == 'DEBUGPASSWORD') {
+	        localStorage.setItem('DebugPassword', paramValue);
+	    }
+	    if (paramName == 'DEBUGTOKENVALIDITY') {
+	        localStorage.setItem('DebugTokenValidity', paramValue);
+	    }
+	    if (paramName == 'LASTTOKENREFRESH') {
+	        localStorage.setItem('LadtTokenRefresh', paramValue);
+	    }
 
 			if (paramName=='SERVERNAME'){
 				localStorage.setItem('ServerName',paramValue);

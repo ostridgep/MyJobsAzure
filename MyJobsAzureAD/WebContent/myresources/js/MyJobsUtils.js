@@ -84,6 +84,11 @@ function isCellConnection() {
     	return false;
     }
 }
+var busyDoingLogon = new sap.m.BusyDialog('_busyDoingLogon', {
+    text: 'Waiting for login to complete ...', title: 'Logging in',
+})
+
+
 var formMessageBox = new sap.m.Dialog("dlgMessageBox",{
     title:"",
     modal: true,
@@ -151,14 +156,7 @@ function DisplayErrorMessage(msgtitle,msgbody){
 	formMessageBox.setState(sap.ui.core.ValueState.Error)
 	sap.ui.getCore().byId("MBmessage").setValue(msgbody)
 	formMessageBox.open();
-//sap.m.MessageBox.show(
-//    msgbody, {
-//        icon: sap.m.MessageBox.Icon.ERROR,
-//        title: msgtitle,
-//        onClose: enableFields(),
-//        actions: [sap.m.MessageBox.Action.OK]
-//    }
-//  );   
+
 }
 function convertToLatLon(en){
 

@@ -2,6 +2,95 @@
 //Added 10-09-2016
 var localJobDets = ""
 var localJobDetsOrders = ""
+function checkAzureLogin() {
+	var username=""   
+    SetLocalStorage();
+   
+
+    if (checkConnection() == false && localStorage.getItem('DebugUsername').length == 0) {
+    	sap.ui.getCore().byId("Login_Message").setValue("No network. A network connection is required to login for the first time");
+    }
+    //requestAzureData("logTableSecured", "PARAM=TABLECOUNTS", function (data) {
+    //    alert("here");
+    //    console.log(data);
+    //});
+
+
+    if (checkConnection() == true) {
+//Check         
+        mobileService = new WindowsAzure.MobileServiceClient(localStorage.getItem('ServerName').split("/api")[0]);
+
+        requestAzureUsername(function (result) {
+            if (result == "FAIL") {
+            }
+            else {
+                console.log(result)
+                if (localStorage.getItem('DebugPassword') != debugPassword) {
+// Need to think about where the Username comes from
+                	
+                	username = result.split("@")[0]                	
+                    localStorage.setItem('DebugUsername', username);
+                }
+
+                requestAzureData("ZGW_MAM30_USER_VALIDATE_SRV", "UserId='" + localStorage.getItem('DebugUsername') + "',Password=''", function (data) {
+                    
+                    if (data == null || data.messageType == null || data.messageType == "" ) {
+                    	sap.ui.getCore().byId("Login_Message").setValue("Unknown error when validating user");
+                        busyDoingLogon.close();
+                    }
+                    else if (data != null && data.messageType == "F") {
+                    	DisplayLoginMessage("Azure Login","Network error  when validating user" + data.message);
+                        busyDoingLogon.close();
+                    }
+                    else if (data != null && data.messageType == "E") {
+                        busyDoingLogon.close();
+                        switch (data.message) {
+                            case "Password logon no longer possible - too many failed attempts":
+                                {
+                            	sap.ui.getCore().byId("Login_Message").setValue("Your SAP dialog Account is locked. Please log a call with the service desk");
+                                    break;
+                                }
+                            case "User account not in validity date":
+                                {
+                            	sap.ui.getCore().byId("Login_Message").setValue("Your SAP dialog Account is not within the validity period. Please log a call with the service desk");
+                                    break;
+                                }
+                            case "Name or password is incorrect (repeat logon)":
+                                {
+                            	sap.ui.getCore().byId("Login_Message").setValue("SAP username or password incorrect");
+                                    break;
+                                }
+                            default:
+                                {
+                            	sap.ui.getCore().byId("Login_Message").setValue("SAP Username or password error " + data.message);
+                                    break;
+                                }
+                        }
+                    }
+                    else {
+                        requestAzureData("ZGW_MAM30_090_GETLIST_T3", "WHERE userid='" + localStorage.getItem('DebugUsername') + "'", function (data) {
+                            if (data.length > 0) {
+                                if (localStorage.getItem('DebugPassword') != debugPassword) {
+                                    localStorage.setItem('DebugScenario', data[0].myalmScenario)
+                                }
+                            }
+                            if (localStorage.getItem('DebugScenario') == "Y009" || localStorage.getItem('DebugScenario') == "Y010") {
+                                window.location.href = "Home.html";
+                            }
+                            else {
+                            	sap.ui.getCore().byId("Login_Message").setValue("Scenario " + data[0].myalmScenario + " is not a valid scenario.");
+                            }
+                        });
+                    }
+                });
+            }
+        })
+    }
+    else {
+        window.location.href = "Home.html"
+    }
+   
+}
 function postAzureData(page, postData, timedOutSQL, recno) {
     Postingazuredataflag = true;
     var myurl = SAPServerPrefix + page + "?" + localStorage.getItem('MobileUser');

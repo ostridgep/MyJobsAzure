@@ -10,9 +10,10 @@
 </script>
 <script type="text/javascript" src="cordova.js"></script>
 <script src="myresources/js/html5sql.js"></script>  
-<script src="myresources/js/bqsync.js"></script>
 <script src="myresources/js/MyJobsDB.js"></script>
 <script src="myresources/js/MyJobsUtils.js"></script>
+<script src="myresources/js/azurefunctions.js"></script>  
+<script src="myresources/js/documents.js"></script> 
 
 
 
@@ -36,10 +37,10 @@
 var PinCodePos=1;
 var pinExists=false;
 
+DeviceStorageDirectory=""
 
 
-
-function checkLogin(n)
+function checkLogin1(n)
 {
 var SQLStatement=""
 var user=""
@@ -393,58 +394,50 @@ var formCreateDB = new sap.m.Dialog("dlgCreateDB",{
 
 		
  }
-
-var formLogin = new sap.m.Dialog("dlgLogin",{
-    title:"Login",
+var formLogin = new sap.m.Dialog("dlgLogin", {
+    title: "Asset Capture",
     modal: true,
-    contentWidth:"1em",
-    buttons: [
-	       		new sap.m.Button( {
-	       			 
-	       			 icon:"sap-icon://add",
-	       				 press: [ function(){
-	       					 sap.ui.getCore().byId("dlgNewUser").open();
-	       				
-	       						}]
-	       			 }),
-	       		new sap.m.Button( {
-	       			 
-	       			 icon:"sap-icon://edit",
-	       				 press: [ function(){
-	       					 sap.ui.getCore().byId("dlgChangePassword").open();
-	       				
-	       						}]
-	       			 })	       			 
-				],					
-    content:[
-						new sap.ui.layout.form.SimpleForm({
-							title: "Enter your Pincode",
-							maxContainerCols : 2,
-							alignItems:"Center",
-						     
-							content : 	[							
-										//kp,
- 										new sap.m.Label({text:"Pin Code"}),
-										new sap.m.Input("Pin",{type: sap.m.InputType.Number}),
-										new sap.m.Label({text:""}),
-							       		new sap.m.Button( {
-							       			 text: "Login",
-							       			 type: 	sap.m.ButtonType.Accept,
-							       			 icon:"sap-icon://accept",
-							       				 press: [ 
-							       				          function(){
-							       							checkLogin(1)
-							       							}
-							       				        ]
-							       			 }) 
-										]
-		 						})
-            ],
-            beforeOpen:function(){
-            	prepareLogin()
-            }
-            
- })
+    contentWidth: "1em",
+    buttons: [new sap.m.Button({
+        type: sap.m.ButtonType.Accept,
+        icon: "sap-icon://settings",
+        press: [function () {
+            sap.ui.getCore().byId("dlgSettings").open();
+        }]
+    }),
+    new sap.m.Button("btnLoginIndex", {
+        text: "Retry",
+        type: sap.m.ButtonType.Accept,
+        tap: [function (oEvt) {
+        	checkAzureLogin();
+
+        }
+        ]
+
+    })
+
+    ],
+    content: [
+ 			new sap.ui.layout.form.SimpleForm({
+ 			    minWidth: 1024,
+ 			    maxContainerCols: 2,
+ 			    content: [
+
+new sap.m.TextArea("Login_Message", { rows: 7, enabled: false, value: "" })
+
+ 			    ]
+ 			})
+    ],
+    beforeOpen: function () {
+    	checkAzureLogin()
+    },
+    afterOpen: function () {
+        if (sap.ui.getCore().byId("Login_Message").getValue() == "") {
+            busyDoingLogon.open();
+        }
+    }
+})
+
 
 
 html5sql.openDatabase("com.aws.myjobs","myjobs", 5*1024*1024);	

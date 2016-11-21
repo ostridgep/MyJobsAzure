@@ -917,6 +917,18 @@ function loadConfigValues(){
 	sap.ui.getCore().getElementById('configReferenceFrequency').setValue(localStorage.getItem('SyncReferenceFrequency'))
 	sap.ui.getCore().getElementById('configTransactionalFrequency').setValue(localStorage.getItem('SyncTransactionalFrequency'))
 	sap.ui.getCore().getElementById('configUploadFrequency').setValue(localStorage.getItem('SyncUploadFrequency'))
+	sap.ui.getCore().getElementById("configDebugUsername").setValue(localStorage.getItem('DebugUsername'));
+    sap.ui.getCore().getElementById("configDebugScenario").setValue(localStorage.getItem('DebugScenario'));
+    sap.ui.getCore().getElementById('configDebugPassword').setValue(localStorage.getItem('DebugPassword'));
+    sap.ui.getCore().getElementById('configDebugTokenValidity').setValue(localStorage.getItem('DebugTokenValidity'));
+	if (localStorage.getItem('DebugPassword') == "DEBUG") {
+           sap.ui.getCore().getElementById("configDebugUsername").setEnabled(true);
+           sap.ui.getCore().getElementById("configDebugScenario").setEnabled(true);
+       }
+       else {
+           sap.ui.getCore().getElementById("configDebugUsername").setEnabled(false);
+           sap.ui.getCore().getElementById("configDebugScenario").setEnabled(false);
+       }
 	if(localStorage.getItem('Trace')=="ON"){
 		sap.ui.getCore().getElementById('configLogState').setState(true)
 	}else{
@@ -946,7 +958,11 @@ var formConfig = new sap.m.Dialog("dlgConfig",{
 						SetConfigParam("SERVERNAME",sap.ui.getCore().getElementById('configServer').getValue());
 						SetConfigParam("SAPCLIENT",sap.ui.getCore().getElementById('configSAPClient').getValue());
 						SetConfigParam("SAPSYSTEM",sap.ui.getCore().getElementById('configSAPSystem').getValue());
-						syncUsersDetails(sap.ui.getCore().getElementById('configServer').getValue())//AZURE
+						SetConfigParam("DEBUGPASSWORD", sap.ui.getCore().getElementById('configDebugPassword').getValue());
+				        SetConfigParam("DEBUGSCENARIO", sap.ui.getCore().getElementById('configDebugScenario').getValue());
+				        SetConfigParam("DEBUGUSERNAME", sap.ui.getCore().getElementById('configDebugUsername').getValue());
+				        SetConfigParam("DEBUGTOKENVALIDITY", sap.ui.getCore().getElementById('configDebugTokenValidity').getValue());
+					    //syncUsersDetails(sap.ui.getCore().getElementById('configServer').getValue())//AZURE
 						
 					   
 					   formConfig.close()} ]
@@ -978,6 +994,13 @@ var formConfig = new sap.m.Dialog("dlgConfig",{
 							new sap.m.Input("configTransactionalFrequency",{type: sap.m.InputType.Input}),
 							new sap.m.Label({text:"Sync Upload Frequency"}),
 							new sap.m.Input("configUploadFrequency",{type: sap.m.InputType.Input}),
+							new sap.m.Label({ text: "Mobile user" }),
+							new sap.m.Input("configDebugUsername", { type: sap.m.InputType.Input }),
+							new sap.m.Label({ text: "Alm Scenario" }),
+							new sap.m.Input("configDebugScenario", { type: sap.m.InputType.Input }),
+							new sap.m.Label({ text: "Debug Password" }),
+							new sap.m.Input("configDebugPassword", { type: sap.m.InputType.Password }),
+							new sap.m.Input("configDebugTokenValidity", { type: sap.m.InputType.Input }),
 							new sap.m.Label({text:"Logging"}),
 							new sap.m.Switch('configLogState',{
 								state: true,
