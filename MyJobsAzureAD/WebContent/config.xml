@@ -63,8 +63,8 @@
     <gap:plugin name="cordova-plugin-splashscreen" source="npm"/>
     <!-- <gap:plugin name="com.venkykowshik.startapp" />  -->
     <gap:plugin spec="https://github.com/venkykowshik/startapp.git"/>
-  <!--  <gap:plugin name="uk.co.whiteoctober.cordova.appversion"/> -->
-  <gap:plugin spec="https://github.com/whiteoctober/cordova-plugin-app-version.git"/>
+    <!--  <gap:plugin name="uk.co.whiteoctober.cordova.appversion"/> -->
+     <gap:plugin spec="https://github.com/whiteoctober/cordova-plugin-app-version.git"/>
 
     <gap:plugin name="cordova-plugin-geolocation" source="npm"/>
     <gap:plugin name="cordova-plugin-globalization" source="npm"/>
@@ -73,6 +73,7 @@
     <gap:plugin name="cordova-plugin-network-information" source="npm"/>
     <plugin name="cordova-plugin-whitelist" source="npm"/>
     <plugin name="cordova-plugin-ms-azure-mobile-apps" source="npm"/>
+    <gap:plugin name="cordova-sqlite-storage" source="npm"/>
     <!-- <gap:plugin name="cordova-plugin-file" /> -->
     <gap:plugin name="cordova-plugin-file"  source="npm"/>
     <gap:plugin name="cordova-plugin-file-transfer" source="npm"/>
