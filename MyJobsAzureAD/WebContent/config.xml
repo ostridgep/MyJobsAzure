@@ -63,6 +63,8 @@
     <gap:plugin name="cordova-plugin-splashscreen" source="npm"/>
     <!-- <gap:plugin name="com.venkykowshik.startapp" />  -->
     <gap:plugin spec="https://github.com/venkykowshik/startapp.git"/>
+    <gap:plugin name="cordova-sqlite-storage" source="npm"/>
+    
     <gap:plugin name="cordova-plugin-ms-azure-mobile-apps" source="npm"/>
      <gap:plugin spec="https://github.com/whiteoctober/cordova-plugin-app-version.git"/>
 
